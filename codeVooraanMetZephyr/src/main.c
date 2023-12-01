@@ -9,7 +9,7 @@
 /* STEP 3 - Include the header file of the Bluetooth LE stack */
 #include <zephyr/bluetooth/bluetooth.h>
 #include <zephyr/bluetooth/gap.h>
-
+#include <zephyr/drivers/i2c.h>  									// Include the I2C header file
 #include <dk_buttons_and_leds.h>
 
 LOG_MODULE_REGISTER(Lesson2_Exercise1, LOG_LEVEL_INF);
@@ -19,6 +19,19 @@ LOG_MODULE_REGISTER(Lesson2_Exercise1, LOG_LEVEL_INF);
 
 #define RUN_STATUS_LED DK_LED1
 #define RUN_LED_BLINK_INTERVAL 1000
+
+/* MPU6050 configuration */
+#define MPU6050_ADDR 0x68
+#define SDA_PIN 20
+#define SCL_PIN 21
+
+/* MPU6050 accelerometer registers */
+#define MPU6050_ACCEL_XOUT_H 0x3B
+#define MPU6050_ACCEL_XOUT_L 0x3C
+#define MPU6050_ACCEL_YOUT_H 0x3D
+#define MPU6050_ACCEL_YOUT_L 0x3E
+#define MPU6050_ACCEL_ZOUT_H 0x3F
+#define MPU6050_ACCEL_ZOUT_L 0x40
 
 /* STEP 4.1.1 - Declare the advertising packet */
 static const struct bt_data ad[] = {
@@ -68,8 +81,34 @@ void main(void)
 
 	LOG_INF("Advertising successfully started\n");
 
+	/* I2C configuration */
+	const struct device *i2c_dev = device_get_binding("I2C_1");
+	if (!i2c_dev) {
+		LOG_ERR("I2C initialization failed\n");
+		return;
+	}
+	uint8_t accel_data[6];
+
+
 	for (;;) {
 		dk_set_led(RUN_STATUS_LED, (++blink_status) % 2);
+		/* Read accelerometer data from MPU6050 */
+		err = i2c_reg_read_byte(i2c_dev, MPU6050_ADDR, MPU6050_ACCEL_XOUT_H, &accel_data[0]);
+		err += i2c_reg_read_byte(i2c_dev, MPU6050_ADDR, MPU6050_ACCEL_XOUT_L, &accel_data[1]);
+		err += i2c_reg_read_byte(i2c_dev, MPU6050_ADDR, MPU6050_ACCEL_YOUT_H, &accel_data[2]);
+		err += i2c_reg_read_byte(i2c_dev, MPU6050_ADDR, MPU6050_ACCEL_YOUT_L, &accel_data[3]);
+		err += i2c_reg_read_byte(i2c_dev, MPU6050_ADDR, MPU6050_ACCEL_ZOUT_H, &accel_data[4]);
+		err += i2c_reg_read_byte(i2c_dev, MPU6050_ADDR, MPU6050_ACCEL_ZOUT_L, &accel_data[5]);
+
+		if (err) {
+			LOG_ERR("Error reading accelerometer data (err %d)\n", err);
+		} else {
+			int16_t accel_x = (accel_data[0] << 8) | accel_data[1];
+			int16_t accel_y = (accel_data[2] << 8) | accel_data[3];
+			int16_t accel_z = (accel_data[4] << 8) | accel_data[5];
+
+			LOG_INF("Accelerometer Data: X=%d, Y=%d, Z=%d\n", accel_x, accel_y, accel_z);
+		}
 		k_sleep(K_MSEC(RUN_LED_BLINK_INTERVAL));
 	}
 }

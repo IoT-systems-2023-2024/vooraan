@@ -1,4 +1,4 @@
-osource "c:/direct_test_mode/boards/shields/*/Kconfig.defconfig"
-osource "d:/school/master-iot/vooraan/bt-fund-main/lesson2/blefund_less2_exer1_solution/boards/shields/*/Kconfig.defconfig"
-osource "d:/school/master-iot/vooraan/codevooraanmetzephyr/boards/shields/*/Kconfig.defconfig"
-osource "D:/programmas/ncs/v2.5.0/nrf/boards/shields/*/Kconfig.defconfig"
+osource "c:/users/user/documents/github/vooraan/bt-fund-main/lesson1/blefund_less1_exer1/boards/shields/*/Kconfig.defconfig"
+osource "c:/users/user/documents/github/vooraan/bt-fund-main/lesson2/blefund_less2_exer1/boards/shields/*/Kconfig.defconfig"
+osource "c:/users/user/documents/github/vooraan/codevooraanmetzephyr/boards/shields/*/Kconfig.defconfig"
+osource "C:/ncs/v2.5.0/nrf/boards/shields/*/Kconfig.defconfig"

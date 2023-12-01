@@ -1,4 +1,4 @@
-# Install script for directory: D:/School/Master-IOT/vooraan/codeVooraanMetZephyr
+# Install script for directory: C:/Users/User/Documents/GitHub/vooraan/codeVooraanMetZephyr
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,12 +34,12 @@ endif()
 
 # Set default install directory permissions.
 if(NOT DEFINED CMAKE_OBJDUMP)
-  set(CMAKE_OBJDUMP "D:/programmas/ncs/toolchains/c57af46cb7/opt/zephyr-sdk/arm-zephyr-eabi/bin/arm-zephyr-eabi-objdump.exe")
+  set(CMAKE_OBJDUMP "C:/ncs/toolchains/c57af46cb7/opt/zephyr-sdk/arm-zephyr-eabi/bin/arm-zephyr-eabi-objdump.exe")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("D:/School/Master-IOT/vooraan/codeVooraanMetZephyr/build/zephyr/cmake_install.cmake")
+  include("C:/Users/User/Documents/GitHub/vooraan/codeVooraanMetZephyr/build/zephyr/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "D:/School/Master-IOT/vooraan/codeVooraanMetZephyr/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/User/Documents/GitHub/vooraan/codeVooraanMetZephyr/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

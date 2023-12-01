@@ -16,7 +16,7 @@
 #define KERNEL_PATCHLEVEL      99
 #define KERNEL_VERSION_STRING  "3.4.99"
 
-#define BUILD_VERSION v3.4.99-ncs1
+#define BUILD_VERSION 2e2523efe52a
 #include <ncs_version.h>
 
 #endif /* _KERNEL_VERSION_H_ */
