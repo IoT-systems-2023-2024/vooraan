@@ -1,0 +1,1 @@
+"nrf":"D:/programmas/ncs/v2.5.0/nrf":"D:/programmas/ncs/v2.5.0/nrf/sysbuild"

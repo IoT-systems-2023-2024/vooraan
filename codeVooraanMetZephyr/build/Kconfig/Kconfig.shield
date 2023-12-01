@@ -1,0 +1,4 @@
+osource "c:/direct_test_mode/boards/shields/*/Kconfig.shield"
+osource "d:/school/master-iot/vooraan/bt-fund-main/lesson2/blefund_less2_exer1_solution/boards/shields/*/Kconfig.shield"
+osource "d:/school/master-iot/vooraan/codevooraanmetzephyr/boards/shields/*/Kconfig.shield"
+osource "D:/programmas/ncs/v2.5.0/nrf/boards/shields/*/Kconfig.shield"
