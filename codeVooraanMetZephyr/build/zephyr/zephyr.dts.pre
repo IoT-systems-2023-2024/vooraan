@@ -886,14 +886,15 @@ arduino_serial: &uart0 {
  pinctrl-names = "default", "sleep";
 };
 
-arduino_i2c: &i2c0 {
+&i2c0 {
  compatible = "nordic,nrf-twi";
  status = "okay";
  pinctrl-0 = <&i2c0_default>;
  pinctrl-1 = <&i2c0_sleep>;
+ clock-frequency = <100000>;
  pinctrl-names = "default", "sleep";
 };
-
+# 179 "C:/ncs/v2.5.0/zephyr/boards/arm/nrf52dk_nrf52832/nrf52dk_nrf52832.dts"
 &i2c1 {
  compatible = "nordic,nrf-twi";
 
@@ -901,6 +902,7 @@ arduino_i2c: &i2c0 {
  pinctrl-0 = <&i2c1_default>;
  pinctrl-1 = <&i2c1_sleep>;
  pinctrl-names = "default", "sleep";
+ status = "okay";
 };
 
 &pwm0 {

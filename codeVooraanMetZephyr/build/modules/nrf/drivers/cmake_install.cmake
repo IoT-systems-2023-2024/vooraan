@@ -39,6 +39,11 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
+  include("C:/Users/User/Documents/GitHub/vooraan/codeVooraanMetZephyr/build/modules/nrf/drivers/sensor/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
   include("C:/Users/User/Documents/GitHub/vooraan/codeVooraanMetZephyr/build/modules/nrf/drivers/mpsl/cmake_install.cmake")
 endif()
 

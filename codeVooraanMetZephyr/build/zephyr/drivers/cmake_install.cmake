@@ -89,7 +89,17 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
+  include("C:/Users/User/Documents/GitHub/vooraan/codeVooraanMetZephyr/build/zephyr/drivers/i2c/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
   include("C:/Users/User/Documents/GitHub/vooraan/codeVooraanMetZephyr/build/zephyr/drivers/pinctrl/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("C:/Users/User/Documents/GitHub/vooraan/codeVooraanMetZephyr/build/zephyr/drivers/sensor/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)

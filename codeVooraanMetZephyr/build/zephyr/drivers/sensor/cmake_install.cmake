@@ -1,4 +1,4 @@
-# Install script for directory: C:/ncs/v2.5.0/nrf/drivers/mpsl
+# Install script for directory: C:/ncs/v2.5.0/zephyr/drivers/sensor
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,11 +39,6 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/User/Documents/GitHub/vooraan/codeVooraanMetZephyr/build/modules/nrf/drivers/mpsl/clock_control/cmake_install.cmake")
-endif()
-
-if(NOT CMAKE_INSTALL_LOCAL_ONLY)
-  # Include the install script for the subdirectory.
-  include("C:/Users/User/Documents/GitHub/vooraan/codeVooraanMetZephyr/build/modules/nrf/drivers/mpsl/temp_nrf5/cmake_install.cmake")
+  include("C:/Users/User/Documents/GitHub/vooraan/codeVooraanMetZephyr/build/zephyr/drivers/sensor/nrf5/cmake_install.cmake")
 endif()
 
