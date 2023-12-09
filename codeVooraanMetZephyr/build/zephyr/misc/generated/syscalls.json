@@ -1313,6 +1313,766 @@
     ],
     [
         [
+            "const struct device *device_get_binding",
+            "const char *name"
+        ],
+        "device.h",
+        false
+    ],
+    [
+        [
+            "bool device_is_ready",
+            "const struct device *dev"
+        ],
+        "device.h",
+        false
+    ],
+    [
+        [
+            "k_thread_stack_t *k_thread_stack_alloc",
+            "size_t size, int flags"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_thread_stack_free",
+            "k_thread_stack_t *stack"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "k_tid_t k_thread_create",
+            "struct k_thread *new_thread,\n\t\t\t\t  k_thread_stack_t *stack,\n\t\t\t\t  size_t stack_size,\n\t\t\t\t  k_thread_entry_t entry,\n\t\t\t\t  void *p1, void *p2, void *p3,\n\t\t\t\t  int prio, uint32_t options, k_timeout_t delay"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_thread_stack_space_get",
+            "const struct k_thread *thread,\n\t\t\t\t       size_t *unused_ptr"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_thread_join",
+            "struct k_thread *thread, k_timeout_t timeout"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int32_t k_sleep",
+            "k_timeout_t timeout"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int32_t k_usleep",
+            "int32_t us"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_busy_wait",
+            "uint32_t usec_to_wait"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_yield",
+            "void"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_wakeup",
+            "k_tid_t thread"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "k_tid_t z_current_get",
+            "void"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_thread_abort",
+            "k_tid_t thread"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_thread_start",
+            "k_tid_t thread"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "k_ticks_t k_thread_timeout_expires_ticks",
+            "const struct k_thread *t"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "k_ticks_t k_thread_timeout_remaining_ticks",
+            "const struct k_thread *t"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_thread_priority_get",
+            "k_tid_t thread"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_thread_priority_set",
+            "k_tid_t thread, int prio"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_thread_deadline_set",
+            "k_tid_t thread, int deadline"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_thread_suspend",
+            "k_tid_t thread"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_thread_resume",
+            "k_tid_t thread"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_is_preempt_thread",
+            "void"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_thread_custom_data_set",
+            "void *value"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void *k_thread_custom_data_get",
+            "void"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_thread_name_set",
+            "k_tid_t thread, const char *str"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_thread_name_copy",
+            "k_tid_t thread, char *buf,\n\t\t\t\t size_t size"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_timer_start",
+            "struct k_timer *timer,\n\t\t\t     k_timeout_t duration, k_timeout_t period"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_timer_stop",
+            "struct k_timer *timer"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "uint32_t k_timer_status_get",
+            "struct k_timer *timer"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "uint32_t k_timer_status_sync",
+            "struct k_timer *timer"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "k_ticks_t k_timer_expires_ticks",
+            "const struct k_timer *timer"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "k_ticks_t k_timer_remaining_ticks",
+            "const struct k_timer *timer"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_timer_user_data_set",
+            "struct k_timer *timer, void *user_data"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void *k_timer_user_data_get",
+            "const struct k_timer *timer"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int64_t k_uptime_ticks",
+            "void"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_queue_init",
+            "struct k_queue *queue"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_queue_cancel_wait",
+            "struct k_queue *queue"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int32_t k_queue_alloc_append",
+            "struct k_queue *queue, void *data"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int32_t k_queue_alloc_prepend",
+            "struct k_queue *queue, void *data"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void *k_queue_get",
+            "struct k_queue *queue, k_timeout_t timeout"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_queue_is_empty",
+            "struct k_queue *queue"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void *k_queue_peek_head",
+            "struct k_queue *queue"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void *k_queue_peek_tail",
+            "struct k_queue *queue"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_futex_wait",
+            "struct k_futex *futex, int expected,\n\t\t\t   k_timeout_t timeout"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_futex_wake",
+            "struct k_futex *futex, bool wake_all"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_event_init",
+            "struct k_event *event"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "uint32_t k_event_post",
+            "struct k_event *event, uint32_t events"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "uint32_t k_event_set",
+            "struct k_event *event, uint32_t events"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "uint32_t k_event_set_masked",
+            "struct k_event *event, uint32_t events,\n\t\t\t\t  uint32_t events_mask"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "uint32_t k_event_clear",
+            "struct k_event *event, uint32_t events"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "uint32_t k_event_wait",
+            "struct k_event *event, uint32_t events,\n\t\t\t\tbool reset, k_timeout_t timeout"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "uint32_t k_event_wait_all",
+            "struct k_event *event, uint32_t events,\n\t\t\t\t    bool reset, k_timeout_t timeout"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int32_t k_stack_alloc_init",
+            "struct k_stack *stack,\n\t\t\t\t   uint32_t num_entries"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_stack_push",
+            "struct k_stack *stack, stack_data_t data"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_stack_pop",
+            "struct k_stack *stack, stack_data_t *data,\n\t\t\t  k_timeout_t timeout"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_mutex_init",
+            "struct k_mutex *mutex"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_mutex_lock",
+            "struct k_mutex *mutex, k_timeout_t timeout"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_mutex_unlock",
+            "struct k_mutex *mutex"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_condvar_init",
+            "struct k_condvar *condvar"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_condvar_signal",
+            "struct k_condvar *condvar"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_condvar_broadcast",
+            "struct k_condvar *condvar"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_condvar_wait",
+            "struct k_condvar *condvar, struct k_mutex *mutex,\n\t\t\t     k_timeout_t timeout"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_sem_init",
+            "struct k_sem *sem, unsigned int initial_count,\n\t\t\t  unsigned int limit"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_sem_take",
+            "struct k_sem *sem, k_timeout_t timeout"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_sem_give",
+            "struct k_sem *sem"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_sem_reset",
+            "struct k_sem *sem"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "unsigned int k_sem_count_get",
+            "struct k_sem *sem"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_msgq_alloc_init",
+            "struct k_msgq *msgq, size_t msg_size,\n\t\t\t\tuint32_t max_msgs"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_msgq_put",
+            "struct k_msgq *msgq, const void *data, k_timeout_t timeout"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_msgq_get",
+            "struct k_msgq *msgq, void *data, k_timeout_t timeout"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_msgq_peek",
+            "struct k_msgq *msgq, void *data"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_msgq_peek_at",
+            "struct k_msgq *msgq, void *data, uint32_t idx"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_msgq_purge",
+            "struct k_msgq *msgq"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "uint32_t k_msgq_num_free_get",
+            "struct k_msgq *msgq"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void  k_msgq_get_attrs",
+            "struct k_msgq *msgq,\n\t\t\t\t struct k_msgq_attrs *attrs"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "uint32_t k_msgq_num_used_get",
+            "struct k_msgq *msgq"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_pipe_alloc_init",
+            "struct k_pipe *pipe, size_t size"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_pipe_put",
+            "struct k_pipe *pipe, void *data,\n\t\t\t size_t bytes_to_write, size_t *bytes_written,\n\t\t\t size_t min_xfer, k_timeout_t timeout"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_pipe_get",
+            "struct k_pipe *pipe, void *data,\n\t\t\t size_t bytes_to_read, size_t *bytes_read,\n\t\t\t size_t min_xfer, k_timeout_t timeout"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "size_t k_pipe_read_avail",
+            "struct k_pipe *pipe"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "size_t k_pipe_write_avail",
+            "struct k_pipe *pipe"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_pipe_flush",
+            "struct k_pipe *pipe"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_pipe_buffer_flush",
+            "struct k_pipe *pipe"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_poll",
+            "struct k_poll_event *events, int num_events,\n\t\t     k_timeout_t timeout"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_poll_signal_init",
+            "struct k_poll_signal *sig"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_poll_signal_reset",
+            "struct k_poll_signal *sig"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_poll_signal_check",
+            "struct k_poll_signal *sig,\n\t\t\t\t   unsigned int *signaled, int *result"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_poll_signal_raise",
+            "struct k_poll_signal *sig, int result"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "void k_str_out",
+            "char *c, size_t n"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_float_disable",
+            "struct k_thread *thread"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int k_float_enable",
+            "struct k_thread *thread, unsigned int options"
+        ],
+        "kernel.h",
+        false
+    ],
+    [
+        [
+            "int sys_cache_data_flush_range",
+            "void *addr, size_t size"
+        ],
+        "cache.h",
+        false
+    ],
+    [
+        [
+            "int sys_cache_data_invd_range",
+            "void *addr, size_t size"
+        ],
+        "cache.h",
+        false
+    ],
+    [
+        [
+            "int sys_cache_data_flush_and_invd_range",
+            "void *addr, size_t size"
+        ],
+        "cache.h",
+        false
+    ],
+    [
+        [
             "void user_fault",
             "unsigned int reason"
         ],

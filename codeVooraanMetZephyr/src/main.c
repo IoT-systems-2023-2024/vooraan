@@ -3,7 +3,8 @@
  *
  * SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
  */
-
+#include <zephyr.h>
+#include <device.h>												// C:\ncs\v2.5.0\zephyr\include\zephyr
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 /* STEP 3 - Include the header file of the Bluetooth LE stack */
@@ -14,33 +15,16 @@
 
 LOG_MODULE_REGISTER(Lesson2_Exercise1, LOG_LEVEL_INF);
 
-#define I2C_DEV_NAME DEVICE_DT_NAME(DT_NODELABEL(i2c0))
-
-
+#define I2C_DEV_NAME DEVICE_DT_NAME(DT_NODELABEL(i2c1))
 #define DEVICE_NAME CONFIG_BT_DEVICE_NAME
 #define DEVICE_NAME_LEN (sizeof(DEVICE_NAME) - 1)
-
 #define RUN_STATUS_LED DK_LED1
 #define RUN_LED_BLINK_INTERVAL 1000
-
-/* MPU6050 configuration */
-
-#define MPU6050_ADDR 0x68
-#define SDA_PIN 26
-#define SCL_PIN 27
-/*
-#define SDA_PIN 20
-#define SCL_PIN 21*/
-#define MPU6050_I2C_ADDR (MPU6050_ADDR << 1)
-
-/* MPU6050 accelerometer registers */
-#define MPU6050_ACCEL_XOUT_H 0x3B
-#define MPU6050_ACCEL_XOUT_L 0x3C
-#define MPU6050_ACCEL_YOUT_H 0x3D
-#define MPU6050_ACCEL_YOUT_L 0x3E
-#define MPU6050_ACCEL_ZOUT_H 0x3F
-#define MPU6050_ACCEL_ZOUT_L 0x40
-
+/* VL3L1X configuration*/
+#define VL53L1X_I2C_ADDR 0x29  										// I2C address of the VL53L1X sensor
+#define VL53L1X_REG_RESULT_RANGE_STATUS 0x0014
+#define SDA_PIN 30
+#define SCL_PIN 31
 /* STEP 4.1.1 - Declare the advertising packet */
 static const struct bt_data ad[] = {
 	/* STEP 4.1.2 - Set the advertising flags */
@@ -92,28 +76,64 @@ void main(void)
 	/* I2C configuration */
 
 	const struct device *dev = device_get_binding(I2C_DEV_NAME);
-	//const struct device *i2c_dev = device_get_binding("i2c0");
 	if (!dev) {
 		LOG_ERR("I2C initialization failed\n");
 		return;
 	}
-	uint8_t accel_data[6];
-
+	//uint8_t accel_data[6];
+	uint8_t vl53l1x_data_buffer[2];
 	
+	 for (;;) {
+		dk_set_led(RUN_STATUS_LED, (++blink_status) % 2);
+		/* Read distance from VL53L1X sensor */
+		vl53l1x_data_buffer[0] = 0x00;  // VL53L1X_REG_SYSRANGE_START
+		vl53l1x_data_buffer[1] = 0x01;  // Value to initiate measurement
+		if (i2c_write(dev, vl53l1x_data_buffer, sizeof(vl53l1x_data_buffer), VL53L1X_I2C_ADDR) != 0)
+		{
+			LOG_ERR("I2C write failed\n");
+		}
+		k_sleep(K_MSEC(30));  // Wait for measurement to complete
+		vl53l1x_data_buffer[0] = VL53L1X_REG_RESULT_RANGE_STATUS;
+		if (i2c_write(dev, vl53l1x_data_buffer, 1, VL53L1X_I2C_ADDR) != 0)
+		{
+			LOG_ERR("I2C write failed\n");
+		}
+		if (i2c_read(dev, vl53l1x_data_buffer, sizeof(vl53l1x_data_buffer), VL53L1X_I2C_ADDR) != 0)
+		{
+			LOG_ERR("I2C read failed\n");
+		}
+		uint16_t distance = (vl53l1x_data_buffer[0] << 8) | vl53l1x_data_buffer[1];
+		LOG_INF("Distance: %d mm\n", distance);
+		k_sleep(K_MSEC(RUN_LED_BLINK_INTERVAL));
+    }
+}
+
+/*
+/* MPU6050 configuration */
+//#define MPU6050_ADDR 0x68
+/*
+#define SDA_PIN 20
+#define SCL_PIN 21*/
+//#define MPU6050_I2C_ADDR (MPU6050_ADDR << 1)
+
+/* MPU6050 accelerometer registers */
+/*
+#define MPU6050_ACCEL_XOUT_H 0x3B
+#define MPU6050_ACCEL_XOUT_L 0x3C
+#define MPU6050_ACCEL_YOUT_H 0x3D
+#define MPU6050_ACCEL_YOUT_L 0x3E
+#define MPU6050_ACCEL_ZOUT_H 0x3F
+#define MPU6050_ACCEL_ZOUT_L 0x40
+*/
+
+/*
 	for (;;) {
 		dk_set_led(RUN_STATUS_LED, (++blink_status) % 2);
 		/* Read accelerometer data from MPU6050 */
 		/*
-		err = i2c_reg_read_byte(dev, MPU6050_ADDR, MPU6050_ACCEL_XOUT_H, &accel_data[0]);
-		err += i2c_reg_read_byte(dev, MPU6050_ADDR, MPU6050_ACCEL_XOUT_L, &accel_data[1]);
-		err += i2c_reg_read_byte(dev, MPU6050_ADDR, MPU6050_ACCEL_YOUT_H, &accel_data[2]);
-		err += i2c_reg_read_byte(dev, MPU6050_ADDR, MPU6050_ACCEL_YOUT_L, &accel_data[3]);
-		err += i2c_reg_read_byte(dev, MPU6050_ADDR, MPU6050_ACCEL_ZOUT_H, &accel_data[4]);
-		err += i2c_reg_read_byte(dev, MPU6050_ADDR, MPU6050_ACCEL_ZOUT_L, &accel_data[5]);
-		*/
 		int ret = i2c_burst_read(dev, MPU6050_I2C_ADDR, MPU6050_ACCEL_XOUT_H, accel_data, 2);
-		if (err) {
-			LOG_ERR("Error reading accelerometer data (err %d)\n", err);
+		if (ret) {
+			LOG_ERR("Error reading accelerometer data (err %d)\n", ret);
 		} else {
 			int16_t accel_x = (accel_data[0] << 8) | accel_data[1];
 			int16_t accel_y = (accel_data[2] << 8) | accel_data[3];
@@ -122,5 +142,4 @@ void main(void)
 		}
 
 		k_sleep(K_MSEC(RUN_LED_BLINK_INTERVAL));
-	}
-}
+	}*/
