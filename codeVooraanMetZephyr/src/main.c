@@ -108,7 +108,7 @@ void main(void)
         LOG_INF("Distance: %d mm\n", distance);
         k_sleep(K_MSEC(INTERVAL));
     }
-	   
+	    
 	// Update the service data with the total values
 	uint16ToHex(teller_acc, hexString);
 	const uint8_t my_service_data_acc[] = { hexString[0], hexString[1] };
