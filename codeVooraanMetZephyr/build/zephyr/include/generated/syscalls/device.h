@@ -65,6 +65,52 @@ static inline bool device_is_ready(const struct device * dev)
 #endif
 #endif
 
+/*
+extern const struct device * z_impl_device_get_binding(const char * name);
+
+__pinned_func
+static inline const struct device * device_get_binding(const char * name)
+{
+#ifdef CONFIG_USERSPACE
+	if (z_syscall_trap()) {
+		union { uintptr_t x; const char * val; } parm0 = { .val = name };
+		return (const struct device *) arch_syscall_invoke1(parm0.x, K_SYSCALL_DEVICE_GET_BINDING);
+	}
+#endif
+	compiler_barrier();
+	return z_impl_device_get_binding(name);
+}
+
+#if defined(CONFIG_TRACING_SYSCALL)
+#ifndef DISABLE_SYSCALL_TRACING
+
+#define device_get_binding(name) ({ 	const struct device * syscall__retval; 	sys_port_trace_syscall_enter(K_SYSCALL_DEVICE_GET_BINDING, device_get_binding, name); 	syscall__retval = device_get_binding(name); 	sys_port_trace_syscall_exit(K_SYSCALL_DEVICE_GET_BINDING, device_get_binding, name, syscall__retval); 	syscall__retval; })
+#endif
+#endif
+
+
+extern bool z_impl_device_is_ready(const struct device * dev);
+
+__pinned_func
+static inline bool device_is_ready(const struct device * dev)
+{
+#ifdef CONFIG_USERSPACE
+	if (z_syscall_trap()) {
+		union { uintptr_t x; const struct device * val; } parm0 = { .val = dev };
+		return (bool) arch_syscall_invoke1(parm0.x, K_SYSCALL_DEVICE_IS_READY);
+	}
+#endif
+	compiler_barrier();
+	return z_impl_device_is_ready(dev);
+}
+
+#if defined(CONFIG_TRACING_SYSCALL)
+#ifndef DISABLE_SYSCALL_TRACING
+
+#define device_is_ready(dev) ({ 	bool syscall__retval; 	sys_port_trace_syscall_enter(K_SYSCALL_DEVICE_IS_READY, device_is_ready, dev); 	syscall__retval = device_is_ready(dev); 	sys_port_trace_syscall_exit(K_SYSCALL_DEVICE_IS_READY, device_is_ready, dev, syscall__retval); 	syscall__retval; })
+#endif
+#endif
+*/
 
 #ifdef __cplusplus
 }

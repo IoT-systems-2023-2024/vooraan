@@ -3,58 +3,76 @@
  *
  * SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
  */
-#include <zephyr.h>
-#include <device.h>												// C:\ncs\v2.5.0\zephyr\include\zephyr
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
-/* STEP 3 - Include the header file of the Bluetooth LE stack */
 #include <zephyr/bluetooth/bluetooth.h>
 #include <zephyr/bluetooth/gap.h>
-#include <zephyr/drivers/i2c.h>  									
-#include <dk_buttons_and_leds.h>
+#include "src\twowire\twowire.h"	
 
-LOG_MODULE_REGISTER(Lesson2_Exercise1, LOG_LEVEL_INF);
 
-#define I2C_DEV_NAME DEVICE_DT_NAME(DT_NODELABEL(i2c1))
+LOG_MODULE_REGISTER(Vorkheftruck, LOG_LEVEL_INF);
+
 #define DEVICE_NAME CONFIG_BT_DEVICE_NAME
 #define DEVICE_NAME_LEN (sizeof(DEVICE_NAME) - 1)
-#define RUN_STATUS_LED DK_LED1
-#define RUN_LED_BLINK_INTERVAL 1000
-/* VL3L1X configuration*/
-#define VL53L1X_I2C_ADDR 0x29  										// I2C address of the VL53L1X sensor
-#define VL53L1X_REG_RESULT_RANGE_STATUS 0x0014
-#define SDA_PIN 30
-#define SCL_PIN 31
-/* STEP 4.1.1 - Declare the advertising packet */
+#define INTERVAL 2000						             // #define INTERVAL 60000      (1000*60) Om de minuut waarde 
+/* MPU6050 */
+#define MPU6050_ADDR 0x68
+#define MPU6050_WAKE_UP 0x6B							//01101011 of 107
+#define MPU6050_INIT_READ 0x3B						    //00111011 of 59
+/* VL53L1X */
+#define VL53L1X_ADDR 0x29
+
+
+// const uint8_t my_service_data[] = { 0x12 };
+/* Declare the advertising packet */
+// static const struct bt_data ad[] = {
+	/* Set the advertising flags */
+	// BT_DATA_BYTES(BT_DATA_FLAGS, BT_LE_AD_NO_BREDR),
+	/* Set the advertising packet data  */
+	// BT_DATA(BT_DATA_NAME_COMPLETE, DEVICE_NAME, DEVICE_NAME_LEN),
+	//cBT_DATA(BT_DATA_SVC_DATA16, &my_service_data, sizeof(my_service_data)),
+	// BT_DATA(BT_DATA_NAME_COMPLETE, my_service_data,1),
+	// BT_DATA_BYTES(BT_DATA_UUID16_ALL, 0x12, 0x34),
+//};
+
+uint8_t COMPANY_ID[] = { 0x99, 0x00};
+uint8_t COMPANY_DATA[] = {0x12, 0x34, 0x6e, 0x74, 0x72, 0x6f, 0x6e, 0x00};
 static const struct bt_data ad[] = {
-	/* STEP 4.1.2 - Set the advertising flags */
-	BT_DATA_BYTES(BT_DATA_FLAGS, BT_LE_AD_NO_BREDR),
-	/* STEP 4.1.3 - Set the advertising packet data  */
-	BT_DATA(BT_DATA_NAME_COMPLETE, DEVICE_NAME, DEVICE_NAME_LEN),
-
+    BT_DATA_BYTES(BT_DATA_FLAGS, (BT_LE_AD_GENERAL | BT_LE_AD_NO_BREDR)),
+    // BT_DATA(BT_DATA_MANUFACTURER_DATA, COMPANY_ID, 2),
+    // BT_DATA(BT_DATA_MANUFACTURER_DATA,COMPANY_DATA,8),
+	BT_DATA(BT_DATA_SVC_DATA16, COMPANY_DATA[0], sizeof(COMPANY_DATA[0])),
+    BT_DATA(BT_DATA_NAME_COMPLETE, DEVICE_NAME, DEVICE_NAME_LEN),
 };
 
-/* STEP 4.2.2 - Declare the URL data to include in the scan response */
-static unsigned char url_data[] = { 0x17, '/', '/', 'a', 'm', 'a', 'z', 'o', 'n', '.', 'c', 'o', 'm' };
+/* Declare the scan response packet */
+static const struct bt_data sd[] = {};
 
-/* STEP 4.2.1 - Declare the scan response packet */
-static const struct bt_data sd[] = {
-	/* 4.2.3 Include the URL data in the scan response packet */
-	BT_DATA(BT_DATA_URI, url_data, sizeof(url_data)),
-};
+void mpu6050_setup(void) {
+    twowire_write_register_byte(MPU6050_ADDR, MPU6050_WAKE_UP, 0);
+}
+
+void mpu6050_read_data(int16_t *accel_x , int16_t *accel_y, int16_t *accel_z) {
+    twowire_read_register_data(MPU6050_ADDR, MPU6050_INIT_READ, (uint8_t *)accel_x);
+    twowire_read_register_data(MPU6050_ADDR, MPU6050_INIT_READ + 2, (uint8_t *)accel_y);
+    twowire_read_register_data(MPU6050_ADDR, MPU6050_INIT_READ + 4, (uint8_t *)accel_z);
+}
+
+void uint16ToHex(uint16_t value, char* hexString) {
+    static const char hexChars[] = "0123456789ABCDEF";
+
+    hexString[0] = hexChars[(value >> 12) & 0xF];
+    hexString[1] = hexChars[(value >> 8) & 0xF];
+    hexString[2] = hexChars[(value >> 4) & 0xF];
+    hexString[3] = hexChars[value & 0xF];
+    hexString[4] = '\0';
+}
 
 void main(void)
 {
-	int blink_status = 0;
 	int err;
 
 	LOG_INF("Start program \n");
-
-	err = dk_leds_init();
-	if (err) {
-		LOG_ERR("LEDs init failed (err %d)\n", err);
-		return;
-	}
 	/* STEP 5 - Enable the Bluetooth LE stack */
 	err = bt_enable(NULL);
 	if (err) {
@@ -64,82 +82,61 @@ void main(void)
 
 	LOG_INF("Bluetooth initialized\n");
 
-	/* STEP 6 - Start advertising */
 	err = bt_le_adv_start(BT_LE_ADV_NCONN, ad, ARRAY_SIZE(ad), sd, ARRAY_SIZE(sd));
 	if (err) {
 		LOG_ERR("Advertising failed to start (err %d)\n", err);
 		return;
 	}
-
 	LOG_INF("Advertising successfully started\n");
 
-	/* I2C configuration */
+	// i2c communicatie
+	twowire_write_register_byte(MPU6050_ADDR, MPU6050_WAKE_UP, 0);
+	int16_t accel_x, accel_y, accel_z;
+	const int16_t collisionThreshold = 20000;
+	float totalAcceleration;
+	uint16_t teller_acc = 0;
 
-	const struct device *dev = device_get_binding(I2C_DEV_NAME);
-	if (!dev) {
-		LOG_ERR("I2C initialization failed\n");
-		return;
-	}
-	//uint8_t accel_data[6];
 	uint8_t vl53l1x_data_buffer[2];
-	
-	 for (;;) {
-		dk_set_led(RUN_STATUS_LED, (++blink_status) % 2);
-		/* Read distance from VL53L1X sensor */
+	uint16_t distance;
+	uint16_t prev_distance = 0;
+	uint16_t teller_tof = 0;
+	char hexString[5];
+
+    for (int i=0;i<10; i++) {													// Voor een dag: for (int i=0;i<(60*24); i++)
+        mpu6050_read_data(&accel_x, &accel_y, &accel_z);
+		LOG_INF("MPU6050 Acceleration - X: %d, Y: %d, Z: %d\n", accel_x, accel_y, accel_z);
+		float totalAcceleration = sqrt(pow(accel_x, 2) + pow(accel_y, 2) + pow(accel_z, 2));
+		if (totalAcceleration > collisionThreshold) teller_acc ++;
+
 		vl53l1x_data_buffer[0] = 0x00;  // VL53L1X_REG_SYSRANGE_START
-		vl53l1x_data_buffer[1] = 0x01;  // Value to initiate measurement
-		if (i2c_write(dev, vl53l1x_data_buffer, sizeof(vl53l1x_data_buffer), VL53L1X_I2C_ADDR) != 0)
-		{
-			LOG_ERR("I2C write failed\n");
+        vl53l1x_data_buffer[1] = 0x01;  // Value to initiate measurement
+		vl53l1x_data_buffer[2] = 0x0014;
+        distance = (vl53l1x_data_buffer[2] << 8) | vl53l1x_data_buffer[1];
+		if (distance < 500) {
+			if (prev_distance != distance) teller_tof ++;
 		}
-		k_sleep(K_MSEC(30));  // Wait for measurement to complete
-		vl53l1x_data_buffer[0] = VL53L1X_REG_RESULT_RANGE_STATUS;
-		if (i2c_write(dev, vl53l1x_data_buffer, 1, VL53L1X_I2C_ADDR) != 0)
-		{
-			LOG_ERR("I2C write failed\n");
-		}
-		if (i2c_read(dev, vl53l1x_data_buffer, sizeof(vl53l1x_data_buffer), VL53L1X_I2C_ADDR) != 0)
-		{
-			LOG_ERR("I2C read failed\n");
-		}
-		uint16_t distance = (vl53l1x_data_buffer[0] << 8) | vl53l1x_data_buffer[1];
-		LOG_INF("Distance: %d mm\n", distance);
-		k_sleep(K_MSEC(RUN_LED_BLINK_INTERVAL));
+        LOG_INF("Distance: %d mm\n", distance);
+        k_sleep(K_MSEC(INTERVAL));
     }
+	
+	// Update the service data with the total values
+	uint16ToHex(teller_acc, hexString);
+	const uint8_t my_service_data_acc[] = { hexString[0], hexString[1] };
+
+	uint16ToHex(teller_tof, hexString);
+	const uint8_t my_service_data_tof[] = { hexString[0], hexString[1] };
+
+	// Update the advertising packet
+	struct bt_data ad_with_service_data[] = {
+		BT_DATA_BYTES(BT_DATA_FLAGS, BT_LE_AD_NO_BREDR),
+		BT_DATA(BT_DATA_NAME_COMPLETE, DEVICE_NAME, DEVICE_NAME_LEN),
+		BT_DATA(BT_DATA_SVC_DATA16, my_service_data_acc, sizeof(my_service_data_acc)),
+		BT_DATA(BT_DATA_SVC_DATA16, my_service_data_tof, sizeof(my_service_data_tof)),
+		BT_DATA_BYTES(BT_DATA_UUID16_ALL, 0x12, 0x34),
+	};
+
+	// Start advertising with updated data
+	err = bt_le_adv_start(BT_LE_ADV_NCONN, ad_with_service_data, ARRAY_SIZE(ad_with_service_data), sd, ARRAY_SIZE(sd));
+
+
 }
-
-/*
-/* MPU6050 configuration */
-//#define MPU6050_ADDR 0x68
-/*
-#define SDA_PIN 20
-#define SCL_PIN 21*/
-//#define MPU6050_I2C_ADDR (MPU6050_ADDR << 1)
-
-/* MPU6050 accelerometer registers */
-/*
-#define MPU6050_ACCEL_XOUT_H 0x3B
-#define MPU6050_ACCEL_XOUT_L 0x3C
-#define MPU6050_ACCEL_YOUT_H 0x3D
-#define MPU6050_ACCEL_YOUT_L 0x3E
-#define MPU6050_ACCEL_ZOUT_H 0x3F
-#define MPU6050_ACCEL_ZOUT_L 0x40
-*/
-
-/*
-	for (;;) {
-		dk_set_led(RUN_STATUS_LED, (++blink_status) % 2);
-		/* Read accelerometer data from MPU6050 */
-		/*
-		int ret = i2c_burst_read(dev, MPU6050_I2C_ADDR, MPU6050_ACCEL_XOUT_H, accel_data, 2);
-		if (ret) {
-			LOG_ERR("Error reading accelerometer data (err %d)\n", ret);
-		} else {
-			int16_t accel_x = (accel_data[0] << 8) | accel_data[1];
-			int16_t accel_y = (accel_data[2] << 8) | accel_data[3];
-			int16_t accel_z = (accel_data[4] << 8) | accel_data[5];
-			LOG_INF("Accelerometer Data: X=%d, Y=%d, Z=%d\n", accel_x, accel_y, accel_z);
-		}
-
-		k_sleep(K_MSEC(RUN_LED_BLINK_INTERVAL));
-	}*/

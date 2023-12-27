@@ -8,6 +8,10 @@
 
 #define Z_SYSCALL_DRIVER_GPIO(ptr, op) Z_SYSCALL_DRIVER_GEN(ptr, op, gpio, GPIO)
 
+#define Z_SYSCALL_DRIVER_I2C(ptr, op) Z_SYSCALL_DRIVER_GEN(ptr, op, i2c, I2C)
+
+#define Z_SYSCALL_DRIVER_SENSOR(ptr, op) Z_SYSCALL_DRIVER_GEN(ptr, op, sensor, SENSOR)
+
 #define Z_SYSCALL_DRIVER_UART(ptr, op) Z_SYSCALL_DRIVER_GEN(ptr, op, uart, UART)
 
 #define Z_SYSCALL_DRIVER_CRYPTO(ptr, op) Z_SYSCALL_DRIVER_GEN(ptr, op, crypto, CRYPTO)
@@ -50,8 +54,6 @@
 
 #define Z_SYSCALL_DRIVER_HWSPINLOCK(ptr, op) Z_SYSCALL_DRIVER_GEN(ptr, op, hwspinlock, HWSPINLOCK)
 
-#define Z_SYSCALL_DRIVER_I2C(ptr, op) Z_SYSCALL_DRIVER_GEN(ptr, op, i2c, I2C)
-
 #define Z_SYSCALL_DRIVER_I2S(ptr, op) Z_SYSCALL_DRIVER_GEN(ptr, op, i2s, I2S)
 
 #define Z_SYSCALL_DRIVER_I3C(ptr, op) Z_SYSCALL_DRIVER_GEN(ptr, op, i3c, I3C)
@@ -87,8 +89,6 @@
 #define Z_SYSCALL_DRIVER_RTC(ptr, op) Z_SYSCALL_DRIVER_GEN(ptr, op, rtc, RTC)
 
 #define Z_SYSCALL_DRIVER_SDHC(ptr, op) Z_SYSCALL_DRIVER_GEN(ptr, op, sdhc, SDHC)
-
-#define Z_SYSCALL_DRIVER_SENSOR(ptr, op) Z_SYSCALL_DRIVER_GEN(ptr, op, sensor, SENSOR)
 
 #define Z_SYSCALL_DRIVER_SMBUS(ptr, op) Z_SYSCALL_DRIVER_GEN(ptr, op, smbus, SMBUS)
 

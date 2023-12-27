@@ -462,6 +462,8 @@
 			};
 		};
 		i2c0_default: i2c0_default {
+			pin-sda = < 0x1a >;
+			pin-scl = < 0x19 >;
 			phandle = < 0x4 >;
 			group1 {
 				psels = < 0xc001a >, < 0xb001b >;

@@ -963,5 +963,14 @@ arduino_spi: &spi2 {
   };
  };
 };
+
+&i2c0_default {
+ pin-sda = <26>;
+ pin-scl = <25>;
+
+
+
+
+};
 # 0 "<command-line>" 2
 # 1 "C:/ncs/v2.5.0/zephyr/misc/empty_file.c"

@@ -1,4 +1,4 @@
 osource "c:/users/user/documents/github/vooraan/bt-fund-main/lesson1/blefund_less1_exer1/boards/shields/*/Kconfig.shield"
-osource "c:/users/user/documents/github/vooraan/bt-fund-main/lesson2/blefund_less2_exer1/boards/shields/*/Kconfig.shield"
 osource "c:/users/user/documents/github/vooraan/codevooraanmetzephyr/boards/shields/*/Kconfig.shield"
+osource "c:/users/user/documents/github/vooraan/bt-fund-main/lesson2/blefund_less2_exer1/boards/shields/*/Kconfig.shield"
 osource "C:/ncs/v2.5.0/nrf/boards/shields/*/Kconfig.shield"
