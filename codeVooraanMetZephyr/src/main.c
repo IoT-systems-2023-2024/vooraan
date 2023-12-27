@@ -23,26 +23,16 @@ LOG_MODULE_REGISTER(Vorkheftruck, LOG_LEVEL_INF);
 #define VL53L1X_ADDR 0x29
 
 
-// const uint8_t my_service_data[] = { 0x12 };
+const uint8_t my_service_data[] = { 0x12 };
 /* Declare the advertising packet */
-// static const struct bt_data ad[] = {
+ static const struct bt_data ad[] = {
 	/* Set the advertising flags */
-	// BT_DATA_BYTES(BT_DATA_FLAGS, BT_LE_AD_NO_BREDR),
+	BT_DATA_BYTES(BT_DATA_FLAGS, BT_LE_AD_NO_BREDR),
 	/* Set the advertising packet data  */
-	// BT_DATA(BT_DATA_NAME_COMPLETE, DEVICE_NAME, DEVICE_NAME_LEN),
-	//cBT_DATA(BT_DATA_SVC_DATA16, &my_service_data, sizeof(my_service_data)),
-	// BT_DATA(BT_DATA_NAME_COMPLETE, my_service_data,1),
-	// BT_DATA_BYTES(BT_DATA_UUID16_ALL, 0x12, 0x34),
-//};
-
-uint8_t COMPANY_ID[] = { 0x99, 0x00};
-uint8_t COMPANY_DATA[] = {0x12, 0x34, 0x6e, 0x74, 0x72, 0x6f, 0x6e, 0x00};
-static const struct bt_data ad[] = {
-    BT_DATA_BYTES(BT_DATA_FLAGS, (BT_LE_AD_GENERAL | BT_LE_AD_NO_BREDR)),
-    // BT_DATA(BT_DATA_MANUFACTURER_DATA, COMPANY_ID, 2),
-    // BT_DATA(BT_DATA_MANUFACTURER_DATA,COMPANY_DATA,8),
-	BT_DATA(BT_DATA_SVC_DATA16, COMPANY_DATA[0], sizeof(COMPANY_DATA[0])),
-    BT_DATA(BT_DATA_NAME_COMPLETE, DEVICE_NAME, DEVICE_NAME_LEN),
+	BT_DATA(BT_DATA_NAME_COMPLETE, DEVICE_NAME, DEVICE_NAME_LEN),
+	BT_DATA(BT_DATA_SVC_DATA16, &my_service_data, sizeof(my_service_data)),
+	BT_DATA(BT_DATA_NAME_COMPLETE, my_service_data,1),
+	BT_DATA_BYTES(BT_DATA_UUID16_ALL, 0x12, 0x34),
 };
 
 /* Declare the scan response packet */
@@ -102,7 +92,7 @@ void main(void)
 	uint16_t teller_tof = 0;
 	char hexString[5];
 
-    for (int i=0;i<10; i++) {													// Voor een dag: for (int i=0;i<(60*24); i++)
+    for (int i=0;i<10; i++) {					// Voor een dag: for (int i=0;i<(60*24); i++)
         mpu6050_read_data(&accel_x, &accel_y, &accel_z);
 		LOG_INF("MPU6050 Acceleration - X: %d, Y: %d, Z: %d\n", accel_x, accel_y, accel_z);
 		float totalAcceleration = sqrt(pow(accel_x, 2) + pow(accel_y, 2) + pow(accel_z, 2));
@@ -118,7 +108,7 @@ void main(void)
         LOG_INF("Distance: %d mm\n", distance);
         k_sleep(K_MSEC(INTERVAL));
     }
-	
+	   
 	// Update the service data with the total values
 	uint16ToHex(teller_acc, hexString);
 	const uint8_t my_service_data_acc[] = { hexString[0], hexString[1] };
@@ -134,7 +124,6 @@ void main(void)
 		BT_DATA(BT_DATA_SVC_DATA16, my_service_data_tof, sizeof(my_service_data_tof)),
 		BT_DATA_BYTES(BT_DATA_UUID16_ALL, 0x12, 0x34),
 	};
-
 	// Start advertising with updated data
 	err = bt_le_adv_start(BT_LE_ADV_NCONN, ad_with_service_data, ARRAY_SIZE(ad_with_service_data), sd, ARRAY_SIZE(sd));
 
